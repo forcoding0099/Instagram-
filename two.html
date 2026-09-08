@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Login Register</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main {
+            width: 800px;
+            height: 500px;
+            display: flex;
+            background: white;
+            border: 1px solid #ccc;
+        }
+
+        .left {
+            width: 50%;
+            background: #833ab4;
+            color: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left h1 {
+            font-size: 45px;
+            line-height: 1;
+        }
+
+        .left a {
+            display: block;
+            width: 130px;
+            margin-top: 30px;
+            padding: 12px;
+            text-align: center;
+            text-decoration: none;
+            background: white;
+            color: #833ab4;
+            border-radius: 5px;
+        }
+
+        .left a:hover {
+            background: #ddd;
+        }
+
+        .right {
+            width: 50%;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #833ab4;
+        }
+
+        .container input {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .container input:focus {
+            border: 1px solid #833ab4;
+        }
+
+        .container input[type="submit"] {
+            background: #833ab4;
+            color: white;
+            border: 0;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .container input[type="submit"]:hover {
+            background: #6d2998;
+        }
+
+        .container label {
+            display: block;
+            height: 17px;
+            font-size: 13px;
+        }
+
+        .notification {
+            text-align: center;
+            height: 20px;
+        }
+
+        #loginPanel {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main">
+
+        <div class="left">
+
+            <h1>
+                WELCOME
+                <br>
+                TO
+                <br>
+                INSTAGRAM
+            </h1>
+
+            <a href="#" id="authBtn" onclick="one(event)">LOGIN</a>
+
+        </div>
+
+        <div class="right">
+
+            <div class="container" id="registerPanel">
+
+                <h2>Register</h2>
+
+                <div class="notification"></div>
+
+                <form onsubmit="HandleSubmit(event)">
+
+                    <input type="text" placeholder="Enter name" id="myname">
+                    <label id="mynamecheck"></label>
+
+                    <input type="number" placeholder="Enter age" id="age">
+                    <label id="myagecheck"></label>
+
+                    <input type="password" placeholder="Enter password" id="password">
+                    <label id="pass1"></label>
+
+                    <input type="password" placeholder="Enter confirm password" id="cpassword">
+                    <label id="pass2"></label>
+
+                    <input type="submit" value="Register">
+
+                </form>
+
+            </div>
+
+            <div class="container" id="loginPanel">
+
+                <h2>Login</h2>
+
+                <div class="notification"></div>
+
+                <form onsubmit="Login(event)">
+
+                    <input type="text" placeholder="Enter username" id="username">
+                    <label id="usernamecheck"></label>
+
+                    <input type="password" placeholder="Enter password" id="loginPassword">
+                    <label id="loginpasscheck"></label>
+
+                    <input type="submit" value="Login">
+
+                </form>
+
+                <audio src="done.mp3" id="done"></audio>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <audio id="errorSound" src="error.mp3"></audio>
+
+    <script>
+        var authBtn = document.getElementById("authBtn")
+        var registerPanel = document.getElementById("registerPanel")
+        var loginPanel = document.getElementById("loginPanel")
+        var errorSound = document.getElementById("errorSound")
+        var donesound = document.getElementById("done")
+
+        function one(e) {
+            e.preventDefault()
+
+            if (authBtn.innerHTML == "LOGIN") {
+                authBtn.innerHTML = "REGISTER NOW"
+                registerPanel.style.display = "none"
+                loginPanel.style.display = "block"
+            } else {
+                authBtn.innerHTML = "LOGIN"
+                registerPanel.style.display = "block"
+                loginPanel.style.display = "none"
+            }
+        }
+
+        var myname = document.getElementById("myname")
+        var mynamecheck = document.getElementById("mynamecheck")
+        var age = document.getElementById("age")
+        var myagecheck = document.getElementById("myagecheck")
+        var password = document.getElementById("password")
+        var cpassword = document.getElementById("cpassword")
+        var pass1 = document.getElementById("pass1")
+        var pass2 = document.getElementById("pass2")
+        var notification = document.querySelector("#registerPanel .notification")
+
+        function HandleSubmit(e) {
+            e.preventDefault()
+
+            if (myname.value == "") {
+                myname.style.border = "2px solid red"
+                mynamecheck.innerHTML = "Enter your Name ?"
+                mynamecheck.style.color = "red"
+
+                errorSound.currentTime = 0
+                errorSound.play()
+
+            } else if (age.value == "") {
+                age.style.border = "2px solid red"
+                myagecheck.innerHTML = "Enter your Age ?"
+                myagecheck.style.color = "red"
+
+                errorSound.currentTime = 0
+                errorSound.play()
+
+            } else if (password.value == "") {
+                password.style.border = "2px solid red"
+                pass1.innerHTML = "Enter your password ?"
+                pass1.style.color = "red"
+
+                errorSound.currentTime = 0
+                errorSound.play()
+
+            } else if (cpassword.value == "") {
+                cpassword.style.border = "2px solid red"
+                pass2.innerHTML = "Enter your confirm password ?"
+                pass2.style.color = "red"
+
+                errorSound.currentTime = 0
+                errorSound.play()
+
+            } else if (password.value != cpassword.value) {
+                notification.innerHTML = "Password does not match"
+                notification.style.color = "red"
+
+                errorSound.currentTime = 0
+                errorSound.play()
+
+            } else {
+                notification.innerHTML = "DONE"
+                notification.style.color = "green"
+                donesound.play()
+            }
+
+            setTimeout(function() {
+                mynamecheck.innerHTML = ""
+                myagecheck.innerHTML = ""
+                pass1.innerHTML = ""
+                pass2.innerHTML = ""
+                notification.innerHTML = ""
+
+                myname.style.border = "1px solid #ccc"
+                age.style.border = "1px solid #ccc"
+                password.style.border = "1px solid #ccc"
+                cpassword.style.border = "1px solid #ccc"
+            }, 3000)
+        }
+
+        var username = document.getElementById("username")
+        var usernamecheck = document.getElementById("usernamecheck")
+        var loginPassword = document.getElementById("loginPassword")
+        var loginpasscheck = document.getElementById("loginpasscheck")
+        var loginNotification = document.querySelector("#loginPanel .notification")
+
+        function Login(e) {
+            e.preventDefault()
+
+            if (username.value == "") {
+                username.style.border = "2px solid red"
+                usernamecheck.innerHTML = "Enter your Username ?"
+                usernamecheck.style.color = "red"
+
+                errorSound.currentTime = 0
+                errorSound.play()
+
+            } else if (loginPassword.value == "") {
+                loginPassword.style.border = "2px solid red"
+                loginpasscheck.innerHTML = "Enter your password ?"
+                loginpasscheck.style.color = "red"
+
+                errorSound.currentTime = 0
+                errorSound.play()
+
+            } else {
+                loginNotification.innerHTML = "DONE"
+                loginNotification.style.color = "green"
+            }
+
+            setTimeout(function() {
+                usernamecheck.innerHTML = ""
+                loginpasscheck.innerHTML = ""
+                loginNotification.innerHTML = ""
+
+                username.style.border = "1px solid #ccc"
+                loginPassword.style.border = "1px solid #ccc"
+            }, 3000)
+        }
+    </script>
+
+</body>
+
+</html>
